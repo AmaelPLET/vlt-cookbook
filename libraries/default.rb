@@ -3,7 +3,7 @@ require 'json'
 
 module Vlt
   def self.file_auth_provider(path = '/etc/vault.json')
-    return lambda do
+    lambda do
       data = ::JSON.parse(::File.read(path))
       return data['address'], data['token'], data['approle']
     end
@@ -35,6 +35,32 @@ module Vlt
         end
       rescue ::Vault::HTTPClientError => e
         err_msg = "Vlt: failed to read data at #{e.address}/#{resolved_path} (HTTP status code: #{e.code})"
+        if raise_err
+          ::Chef::Application.fatal!(err_msg, 1)
+        else
+          ::Chef::Log.warn(err_msg)
+        end
+      end
+
+      r
+    end
+
+    def list(path, prefix: nil, raise_err: true)
+      init_client if @client.nil?
+
+      resolved_path = path
+      unless @default_prefix.nil?
+        resolved_path = "#{@default_prefix}/metadata/#{path}"
+      end
+      unless prefix.nil?
+        resolved_path = "#{prefix}/metadata/#{path}"
+      end
+
+      r = []
+      begin
+        r = @client.logical.list(resolved_path)
+      rescue ::Vault::HTTPClientError => e
+        err_msg = "Vlt: failed to list data at #{e.address}/#{resolved_path} (HTTP status code: #{e.code})"
         if raise_err
           ::Chef::Application.fatal!(err_msg, 1)
         else
