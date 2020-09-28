@@ -3,7 +3,7 @@ maintainer 'Alexander Pyatkin'
 maintainer_email 'aspyatkin@gmail.com'
 license 'MIT'
 description "Chef helper lib to read secrets from HashiCorp's Vault"
-version '0.2.0'
+version '0.2.1'
 
 scm_url = 'https://github.com/aspyatkin/vlt-cookbook'
 source_url scm_url if respond_to?(:source_url)

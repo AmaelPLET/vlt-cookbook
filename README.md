@@ -1,4 +1,6 @@
 # vlt cookbook
+[![Chef cookbook](https://img.shields.io/cookbook/v/vlt.svg?style=flat-square)]()
+[![license](https://img.shields.io/github/license/aspyatkin/vlt-cookbook.svg?style=flat-square)]()  
 Chef helper lib to read secrets from HashiCorp's Vault
 
 ## Concept
@@ -48,7 +50,7 @@ The sample above will list secret names at `tls/metadata/certificate`.
 One can specify a default prefix in `::Vlt::Client` constructor:
 
 ```ruby
-vlt = ::Vlt::Client.new(::Vlt.file_auth_provider, default_prefix: 'postgres')
+vlt = ::Vlt::Client.new(::Vlt.file_auth_provider, 'postgres')
 ```
 
 ### exception handling
