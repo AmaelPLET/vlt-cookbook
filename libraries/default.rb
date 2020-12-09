@@ -16,6 +16,13 @@ module Vlt
       @client = nil
     end
 
+    def renew_lease
+      address, token, approle = @auth_provider_func.call
+      temp_client = ::Vault::Client.new(address: address, token: token)
+      temp_client.auth_token.renew_self
+      nil
+    end
+
     def read(path, prefix: nil, key: nil, raise_err: true)
       init_client if @client.nil?
 

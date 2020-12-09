@@ -74,5 +74,20 @@ end
 vlt = ::Vlt::Client.new(custom_vault_auth)
 ```
 
+### renew token
+Renew token on every chef-client run:
+
+```ruby
+vlt = ::Vlt::Client.new(::Vlt::file_auth_provider)
+
+ruby_block 'renew Vault token lease' do
+  block do
+    vlt.renew_lease
+  end
+  action :run
+end
+```
+
+
 ## License
 MIT @ [Alexander Pyatkin](https://github.com/aspyatkin)
